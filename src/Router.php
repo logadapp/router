@@ -44,3 +44,18 @@ final class Router
         return $this->basePath;
     }
 
+    /**
+     * 404 handler
+     * @param callable $handler
+     * @return self
+     */
+    public function addNotFoundHandler(callable $handler):self
+    {
+        $this->notFoundHandler = $handler;
+    }
+
+    public function getNotFoundHandler(): callable
+    {
+        return $this->notFoundHandler;
+    }
+
