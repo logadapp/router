@@ -126,3 +126,23 @@ final class Router
         array_pop($this->groupStack);
     }
 
+    ## Add Handler ##
+    private function addHandler(string $method, string $path, callable $handler):void
+    {
+        $prefix = implode('', $this->groupStack);
+        $path = $prefix . $path;
+        $regex = null;
+        // named variables
+        if (strpos($path, '{')) {
+            $regex = preg_replace('/{([a-zA-Z_]+)}/', "(?P<$1>[a-zA-Z0-9_-]+)", $path);
+            $regex = str_replace('/(', '\/(', $regex);
+        }
+
+        $this->handlers[$method . $path] = [
+            'path' => $this->basePath.$path,
+            'method' => $method,
+            'handler' => $handler,
+            'regex' => $regex
+        ];
+    }
+
