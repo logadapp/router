@@ -146,3 +146,77 @@ final class Router
         ];
     }
 
+    ## Deploy ##
+    public function run(): void
+    {
+        $requestUrl = parse_url($_SERVER['REQUEST_URI']);
+        $requestPath = $requestUrl['path'];
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+
+        $callback = null;
+        $args = [];
+        $methodNotAllowed = false;
+
+        foreach ($this->handlers as $handler) {
+            if (!empty($handler['regex']) && $handler['method'] === $requestMethod) {
+                $regex = trim($handler['regex'], '/');
+                if (preg_match("%$regex%", $requestPath, $matches)) {
+                    foreach ($matches as $mKey => $value) {
+                        if (is_numeric($mKey)) {
+                            continue;
+                        }
+                        $args[$mKey] = $value;
+                        $callback = $handler['handler'];
+                    }
+                }
+            } else {
+                if ($handler['path'] === $requestPath && $handler['method'] === $requestMethod) {
+                    $callback = $handler['handler'];
+                } elseif ($handler['path'] === $requestPath) {
+                    $methodNotAllowed = true;
+                }
+            }
+        }
+
+        if ($methodNotAllowed) {
+            if (!empty($this->notAllowedHandler)) {
+                call_user_func($this->notAllowedHandler, $requestPath);
+            } else {
+                http_response_code(405);
+                throw new \Exception("Method not allowed for $requestPath");
+            }
+            return;
+        }
+
+        // Classes as callback
+        if (is_array($callback)) {
+            $className = array_shift($callback);
+            $handler = new $className;
+            $methodFunction = array_shift($callback);
+            $callback = [$handler, $methodFunction];
+        }
+
+        if (!$callback) {
+            if (!empty($this->notFoundHandler)) {
+                call_user_func($this->notFoundHandler, $requestPath);
+                return;
+            } else {
+                http_response_code(404);
+            }
+        }
+
+        if (!empty($this->routeFoundHandler)) {
+            call_user_func_array($this->routeFoundHandler, [
+                'method' => $requestMethod,
+                'path' => $requestPath,
+                'url' => $requestUrl,
+                'args' => $args,
+                'callback' => $callback
+            ]);
+        } else {
+            call_user_func_array($callback, [
+                $args
+            ]);
+        }
+    }
+}
