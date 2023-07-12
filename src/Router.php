@@ -17,3 +17,7 @@ final class Router
     private array $groupStack = [];
 
     private $notFoundHandler;
+    
+    private $notAllowedHandler;
+
+    private $routeFoundHandler;
