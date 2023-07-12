@@ -108,3 +108,21 @@ final class Router
         $this->addHandler(self::METHOD_DELETE, $path, $handler);
     }
 
+    /**
+     * Group common routes
+     * @param string $prefix
+     * @param callable $callback
+     * @return void
+     */
+    public function group(string $prefix, callable $callback): void
+    {
+        // Push the current group prefix to the stack
+        $this->groupStack[] = $prefix;
+
+        // Execute the callback to define endpoints within the group
+        $callback();
+
+        // Pop the last group prefix from the stack
+        array_pop($this->groupStack);
+    }
+
