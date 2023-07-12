@@ -12,3 +12,8 @@ final class Router
 {
     private string $basePath = '';
 
+    private array $handlers;
+
+    private array $groupStack = [];
+
+    private $notFoundHandler;
