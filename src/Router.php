@@ -34,3 +34,13 @@ final class Router
 
     private const METHOD_OPTIONS = 'OPTIONS';
 
+    public function setBasePath(string $basePath):void
+    {
+        $this->basePath = $basePath;
+    }
+
+    public function getBasePath(): string
+    {
+        return $this->basePath;
+    }
+
