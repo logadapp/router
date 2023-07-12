@@ -70,3 +70,9 @@ final class Router
         return $this->notAllowedHandler;
     }
 
+    public function setRouteFoundHandler(callable $handler):self
+    {
+        $this->routeFoundHandler = $handler;
+        return $this;
+    }
+
