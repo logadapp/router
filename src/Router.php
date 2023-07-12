@@ -21,3 +21,16 @@ final class Router
     private $notAllowedHandler;
 
     private $routeFoundHandler;
+
+    private const METHOD_GET = 'GET';
+
+    private const METHOD_POST = 'POST';
+
+    private const METHOD_PATCH = 'PATCH';
+
+    private const METHOD_DELETE = 'DELETE';
+
+    private const METHOD_PUT = 'PUT';
+
+    private const METHOD_OPTIONS = 'OPTIONS';
+
