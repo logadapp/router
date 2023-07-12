@@ -59,3 +59,14 @@ final class Router
         return $this->notFoundHandler;
     }
 
+    public function setNotAllowedHandler(callable $handler):self
+    {
+        $this->notAllowedHandler = $handler;
+        return $this;
+    }
+
+    public function getNotAllowedHandler(): callable
+    {
+        return $this->notAllowedHandler;
+    }
+
