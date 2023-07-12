@@ -10,3 +10,5 @@ namespace Logadapp\Router;
  */
 final class Router
 {
+    private string $basePath = '';
+
