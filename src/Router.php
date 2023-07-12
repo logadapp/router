@@ -76,3 +76,35 @@ final class Router
         return $this;
     }
 
+    ## GET HTTP method ##
+    public function get(string $path, callable $handler):void
+    {
+        $this->addHandler(self::METHOD_GET, $path, $handler);
+    }
+
+    ## POST HTTP method ##
+    public function post(string $path, callable $handler):void
+    {
+        $this->addHandler(self::METHOD_POST, $path, $handler);
+    }
+
+    /**
+     * @param string $path
+     * @param callable $handler
+     * @return void
+     */
+    public function patch(string $path, callable $handler):void
+    {
+        $this->addHandler(self::METHOD_PATCH, $path, $handler);
+    }
+
+    /**
+     * @param string $path
+     * @param callable $handler
+     * @return void
+     */
+    public function delete(string $path, callable $handler):void
+    {
+        $this->addHandler(self::METHOD_DELETE, $path, $handler);
+    }
+
