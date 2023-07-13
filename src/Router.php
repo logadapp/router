@@ -213,6 +213,7 @@ final class Router
                 return;
             } else {
                 http_response_code(404);
+                throw new RouteNotFoundException($requestPath);
             }
         }
 
