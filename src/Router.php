@@ -1,7 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace Logadapp\Router;
+namespace LogadApp\Router;
+
+use LogadApp\Router\Exception\MethodNotAllowedException;
+use LogadApp\Router\Exception\RouteNotFoundException;
 
 /**
  * Class Router
@@ -49,9 +52,10 @@ final class Router
      * @param callable $handler
      * @return self
      */
-    public function addNotFoundHandler(callable $handler):self
+    public function setNotFoundHandler(callable $handler):self
     {
         $this->notFoundHandler = $handler;
+        return $this;
     }
 
     public function getNotFoundHandler(): callable
@@ -59,6 +63,11 @@ final class Router
         return $this->notFoundHandler;
     }
 
+    /**
+     * 405 handler
+     * @param callable $handler
+     * @return self
+     */
     public function setNotAllowedHandler(callable $handler):self
     {
         $this->notAllowedHandler = $handler;
@@ -70,6 +79,11 @@ final class Router
         return $this->notAllowedHandler;
     }
 
+    /**
+     * When a route is found
+     * @param callable $handler
+     * @return self
+     */
     public function setRouteFoundHandler(callable $handler):self
     {
         $this->routeFoundHandler = $handler;
@@ -183,7 +197,7 @@ final class Router
                 call_user_func($this->notAllowedHandler, $requestPath);
             } else {
                 http_response_code(405);
-                throw new \Exception("Method not allowed for $requestPath");
+                throw new MethodNotAllowedException($requestPath);
             }
             return;
         }
@@ -202,21 +216,22 @@ final class Router
                 return;
             } else {
                 http_response_code(404);
+                throw new RouteNotFoundException($requestPath);
             }
         }
 
+        $route = new Route();
+        $route->setPath($requestPath);
+        $route->setMethod($requestMethod);
+        $route->setArgs($args);
+
         if (!empty($this->routeFoundHandler)) {
-            call_user_func_array($this->routeFoundHandler, [
-                'method' => $requestMethod,
-                'path' => $requestPath,
-                'url' => $requestUrl,
-                'args' => $args,
-                'callback' => $callback
+            call_user_func($this->routeFoundHandler, [
+                'callback' => $callback,
+                'route' => $route
             ]);
         } else {
-            call_user_func_array($callback, [
-                $args
-            ]);
+            call_user_func($callback, $route);
         }
     }
 }
