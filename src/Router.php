@@ -49,7 +49,7 @@ final class Router
      * @param callable $handler
      * @return self
      */
-    public function addNotFoundHandler(callable $handler):self
+    public function setNotFoundHandler(callable $handler):self
     {
         $this->notFoundHandler = $handler;
     }
