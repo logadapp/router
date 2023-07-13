@@ -91,33 +91,33 @@ final class Router
     }
 
     ## GET HTTP method ##
-    public function get(string $path, callable $handler):void
+    public function get(string $path, callable|array $handler):void
     {
         $this->addHandler(self::METHOD_GET, $path, $handler);
     }
 
     ## POST HTTP method ##
-    public function post(string $path, callable $handler):void
+    public function post(string $path, callable|array $handler):void
     {
         $this->addHandler(self::METHOD_POST, $path, $handler);
     }
 
     /**
      * @param string $path
-     * @param callable $handler
+     * @param callable|array $handler
      * @return void
      */
-    public function patch(string $path, callable $handler):void
+    public function patch(string $path, callable|array $handler):void
     {
         $this->addHandler(self::METHOD_PATCH, $path, $handler);
     }
 
     /**
      * @param string $path
-     * @param callable $handler
+     * @param callable|array $handler
      * @return void
      */
-    public function delete(string $path, callable $handler):void
+    public function delete(string $path, callable|array $handler):void
     {
         $this->addHandler(self::METHOD_DELETE, $path, $handler);
     }
@@ -141,7 +141,7 @@ final class Router
     }
 
     ## Add Handler ##
-    private function addHandler(string $method, string $path, callable $handler):void
+    private function addHandler(string $method, string $path, callable|array $handler):void
     {
         $prefix = implode('', $this->groupStack);
         $path = $prefix . $path;
