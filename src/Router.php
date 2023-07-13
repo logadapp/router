@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Logadapp\Router;
+namespace LogadApp\Router;
 
 /**
  * Class Router
