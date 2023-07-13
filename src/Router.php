@@ -76,6 +76,11 @@ final class Router
         return $this->notAllowedHandler;
     }
 
+    /**
+     * When a route is found
+     * @param callable $handler
+     * @return self
+     */
     public function setRouteFoundHandler(callable $handler):self
     {
         $this->routeFoundHandler = $handler;
