@@ -194,7 +194,7 @@ final class Router
                 call_user_func($this->notAllowedHandler, $requestPath);
             } else {
                 http_response_code(405);
-                throw new \Exception("Method not allowed for $requestPath");
+                throw new MethodNotAllowedException($requestPath);
             }
             return;
         }
