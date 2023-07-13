@@ -60,6 +60,11 @@ final class Router
         return $this->notFoundHandler;
     }
 
+    /**
+     * 405 handler
+     * @param callable $handler
+     * @return self
+     */
     public function setNotAllowedHandler(callable $handler):self
     {
         $this->notAllowedHandler = $handler;
