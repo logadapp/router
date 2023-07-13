@@ -52,6 +52,7 @@ final class Router
     public function setNotFoundHandler(callable $handler):self
     {
         $this->notFoundHandler = $handler;
+        return $this;
     }
 
     public function getNotFoundHandler(): callable
