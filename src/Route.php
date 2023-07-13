@@ -6,6 +6,8 @@ final class Route
 {
     private string $path;
     private string $method;
+    private array $args;
+
     public function setPath(string $path):self
     {
         $this->path = $path;
@@ -28,4 +30,14 @@ final class Route
         return $this->method;
     }
 
+    public function setArgs(array $args): self
+    {
+        $this->args = $args;
+        return $this;
+    }
+
+    public function getArgs(): array
+    {
+        return $this->args;
+    }
 }
