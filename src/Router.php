@@ -220,18 +220,18 @@ final class Router
             }
         }
 
+        $route = new Route();
+        $route->setPath($requestPath);
+        $route->setMethod($requestMethod);
+        $route->setArgs($args);
+
         if (!empty($this->routeFoundHandler)) {
-            call_user_func_array($this->routeFoundHandler, [
-                'method' => $requestMethod,
-                'path' => $requestPath,
-                'url' => $requestUrl,
-                'args' => $args,
-                'callback' => $callback
+            call_user_func($this->routeFoundHandler, [
+                'callback' => $callback,
+                'route' => $route
             ]);
         } else {
-            call_user_func_array($callback, [
-                $args
-            ]);
+            call_user_func($callback, $route);
         }
     }
 }
