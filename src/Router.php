@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace LogadApp\Router;
 
+use LogadApp\Router\Exception\MethodNotAllowedException;
+use LogadApp\Router\Exception\RouteNotFoundException;
+
 /**
  * Class Router
  * @author Michael Arawole <michael@logad.net>
