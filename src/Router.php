@@ -202,14 +202,6 @@ final class Router
             return;
         }
 
-        // Classes as callback
-        if (is_array($callback)) {
-            $className = array_shift($callback);
-            $handler = new $className;
-            $methodFunction = array_shift($callback);
-            $callback = [$handler, $methodFunction];
-        }
-
         if (!$callback) {
             if (!empty($this->notFoundHandler)) {
                 call_user_func($this->notFoundHandler, $requestPath);
@@ -220,18 +212,33 @@ final class Router
             }
         }
 
+        // Classes as callback
         $route = new Route();
         $route->setPath($requestPath);
         $route->setMethod($requestMethod);
         $route->setArgs($args);
 
-        if (!empty($this->routeFoundHandler)) {
-            call_user_func($this->routeFoundHandler, [
-                'callback' => $callback,
-                'route' => $route
-            ]);
+        if (is_array($callback)) {
+            if (!empty($this->routeFoundHandler)) {
+                call_user_func($this->routeFoundHandler, [
+                    'callback' => $callback,
+                    'route' => $route
+                ]);
+            } else {
+                $className = array_shift($callback);
+                $handler = new $className;
+                $methodFunction = array_shift($callback);
+                $callback = [$handler, $methodFunction];
+            }
         } else {
-            call_user_func($callback, $route);
+            if (!empty($this->routeFoundHandler)) {
+                call_user_func($this->routeFoundHandler, [
+                    'callback' => $callback,
+                    'route' => $route
+                ]);
+            } else {
+                call_user_func($callback, $route);
+            }
         }
     }
 }
