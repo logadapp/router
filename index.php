@@ -12,6 +12,10 @@ if ($scriptDir == "/") {
 }
 $router->setBasePath($scriptDir);
 
+$router->addMiddleware('auth', function () {
+    echo 'Auth middleware called', PHP_EOL;
+});
+
 $router->get('/', function ($route) {
     echo 'Nice!', ' You got here.', ' Off to a good start..', PHP_EOL;
     echo 'Method: ', $route->getMethod(), PHP_EOL;
