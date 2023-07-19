@@ -20,8 +20,8 @@ $router->get('/', function ($route) {
     echo 'Nice!', ' You got here.', ' Off to a good start..', PHP_EOL;
     echo 'Method: ', $route->getMethod(), PHP_EOL;
     echo 'Path: ', $route->getPath(), PHP_EOL;
-    echo 'Arguments: ', json_encode($route->getArguments()), PHP_EOL;
-});
+    echo 'Arguments: ', json_encode($route->getArgs()), PHP_EOL;
+})->middleware('auth');
 
 $router->setRouteFoundHandler(function ($routeInfo) {
     $callback = $routeInfo['callback'];
